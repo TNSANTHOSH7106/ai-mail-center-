@@ -1,0 +1,165 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "contextWindowLength": 50
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "063fd15d-2287-41cd-b7fb-4f7402f1f5c7",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "330f8502-170b-4984-b21c-73bac385d1d5",
+      "name": "user message ",
+      "webhookId": "3c4bee39-1fcd-49b8-9bf5-735c7f7e8c36"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        208
+      ],
+      "id": "6fc92df0-dde9-41a3-a761-b6fb722f8052",
+      "name": "Brain",
+      "credentials": {
+        "openAiApi": {
+          "id": "XaHBh6xLhKokKfJO",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        368,
+        208
+      ],
+      "id": "a4ca0999-f2aa-4695-8d90-9a54bc1272c9",
+      "name": "Action",
+      "webhookId": "07c0ea87-551a-4ccc-8f20-075667a09025",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "r0nORft1aR59Bavi",
+          "name": "Gmail account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful ai agent,able to call the tool when user request.\n1.gmail tool-when user wants to send a mail"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "506855c1-5a48-4c26-bac7-57c49760e803",
+      "name": "AI Agent(p)"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -416,
+        336
+      ],
+      "typeVersion": 1,
+      "id": "84d74896-bf0e-41e9-a9aa-91c8504af85d",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent(p)",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "user message ": {
+      "main": [
+        [
+          {
+            "node": "AI Agent(p)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brain": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent(p)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Action": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent(p)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "84c61bc7-1f58-4325-a161-717f625d58e2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f58b28350fb8c75e25a85fa1dedeff28cbba9e1c4cf02df82ab9158ce64fa8bc"
+  },
+  "id": "kdHy4EwK9YOGta7ejqNCt",
+  "tags": []
+}
